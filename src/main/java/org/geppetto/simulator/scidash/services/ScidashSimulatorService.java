@@ -3,6 +3,7 @@ package org.geppetto.simulator.scidash.services;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,9 +82,10 @@ public class ScidashSimulatorService extends ASimulator implements ISimulationRu
 		}
 	}
 	
-	private void sendResults(List<URL> results) {
+	private void sendResults(long tokenID, List<URL> results) {
 		String json = new Gson().toJson(results);
-		logger.info("Json: " + json);
+		logger.info("Results: " + json);
+		logger.info("Token ID : " + tokenID);
 	}
 	
 	/**
@@ -119,11 +121,27 @@ public class ScidashSimulatorService extends ASimulator implements ISimulationRu
 
 	@Override
 	public void simulationFailed(String errorMessage, Exception e, IExperiment experiment) {
+		logger.error("Simulation error message: "+ errorMessage);
+		logger.error("Simulation error stacktrace : " + e.getMessage());
 	}
 
 	@Override
-	public void simulationDone(IExperiment experiment, List<URL> results)  throws GeppettoExecutionException {
-		this.sendResults(results);		
+	public void simulationResultsReady(IExperiment experiment, List<URL> results)  throws GeppettoExecutionException {
+		Iterator it = this.runningSimulations.entrySet().iterator();
+	    long matchedTokenID = 0;
+	    while (it.hasNext()) {
+	    	Map.Entry pair = (Map.Entry)it.next();
+	    	IExperiment matchedExperiment = (IExperiment) pair.getValue();
+	    	if(matchedExperiment == experiment) {
+	    		matchedTokenID = (long) pair.getKey();
+	    	}
+	    }
+		this.sendResults(matchedTokenID,results);		
+	}
+	
+	@Override
+	public void simulationDone(IExperiment experiment)  throws GeppettoExecutionException {
+		logger.info("Simulation done for experiment " + experiment.getId());
 	}
 
 
