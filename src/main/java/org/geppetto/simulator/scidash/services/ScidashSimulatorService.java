@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geppetto.core.beans.PathConfiguration;
-import org.geppetto.core.beans.SimulatorConfig;
 import org.geppetto.core.common.GeppettoExecutionException;
 import org.geppetto.core.common.GeppettoInitializationException;
 import org.geppetto.core.data.model.IAspectConfiguration;
@@ -30,6 +29,7 @@ import org.geppetto.core.simulation.ISimulatorCallbackListener;
 import org.geppetto.model.DomainModel;
 import org.geppetto.model.ExperimentState;
 import org.geppetto.simulator.external.services.NeuronSimulatorService;
+import org.geppetto.simulator.scidash.config.ScidashSimulatorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +41,8 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 
 	private static Log logger = LogFactory.getLog(ScidashSimulatorService.class);
 
-	private String uploadResultsURL = "http://ptsv2.com/t/lzyso-1533739271/post";
-
 	@Autowired
-	private SimulatorConfig scidashSimulatorConfig;
+	private ScidashSimulatorConfig scidashSimulatorConfig;
 	
 	Map <Long,IExperiment> runningSimulations = new ConcurrentHashMap<>();
 	
@@ -87,7 +85,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 		
 		int responseCode = 0;
 		try {
-			URL obj = new URL(uploadResultsURL);
+			URL obj = new URL(scidashSimulatorConfig.getServerURL());
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 			con.setRequestMethod("POST");
@@ -102,7 +100,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			wr.close();
 
 			responseCode = con.getResponseCode();
-			logger.info("\nSending 'POST' request to URL : " + uploadResultsURL);
+			logger.info("\nSending 'POST' request to URL : " + scidashSimulatorConfig.getServerURL());
 			logger.info("Post parameters : " + resultsPost);
 			logger.info("Response Code : " + responseCode);
 
@@ -120,7 +118,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			logger.info(response.toString());
 
 		} catch (Exception e) {
-			logger.error("Error uploadiing results to " + this.uploadResultsURL);
+			logger.error("Error uploadiing results to " + this.scidashSimulatorConfig.getServerURL());
 			logger.error(e.getMessage());
 		}
 		
@@ -201,7 +199,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 	 * @param neuronSimulatorConfig
 	 * @deprecated for test purposes only, the configuration is autowired
 	 */
-	public void setScidashSimulatorConfig(SimulatorConfig scidashSimulatorConfig)
+	public void setScidashSimulatorConfig(ScidashSimulatorConfig scidashSimulatorConfig)
 	{
 		this.scidashSimulatorConfig = scidashSimulatorConfig;
 	}

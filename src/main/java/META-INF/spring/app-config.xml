@@ -14,9 +14,9 @@
 	<context:component-scan base-package="org.geppetto.simulator.scidash.services" />
 		
 	<!-- Add flag for Simulation Run Mode --> 
-	<bean id="scidashSimulatorConfig" class="org.geppetto.core.beans.SimulatorConfig"> 
+	<bean id="scidashSimulatorConfig" class="org.geppetto.simulator.scidash.beans.SimulatorConfig"> 
 		<property name="simulatorName" value="SciDash Simulator" />
 		<property name="simulatorID" value="scidashSimulator" />
-		<property name="simulatorUploadUrl" value="http://ptsv2.com/t/lzyso-1533739271" />
+		<property name="simulatorUploadUrl" value="http://ptsv2.com/t/lhsxx-1533830882/post" />
 	</bean>
 </beans>
