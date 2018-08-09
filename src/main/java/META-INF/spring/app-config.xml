@@ -17,5 +17,6 @@
 	<bean id="scidashSimulatorConfig" class="org.geppetto.core.beans.SimulatorConfig"> 
 		<property name="simulatorName" value="SciDash Simulator" />
 		<property name="simulatorID" value="scidashSimulator" />
+		<property name="simulatorUploadUrl" value="http://ptsv2.com/t/lzyso-1533739271" />
 	</bean>
 </beans>

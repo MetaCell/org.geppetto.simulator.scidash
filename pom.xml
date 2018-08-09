@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
-			<artifactId>simulation</artifactId>
+			<artifactId>simulator.external</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

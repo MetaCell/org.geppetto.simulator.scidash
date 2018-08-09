@@ -1,138 +1,156 @@
-//package org.geppetto.simulator.scidash.tests;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.net.URL;
-//import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
-//
-//import org.geppetto.core.beans.SimulatorConfig;
-//import org.geppetto.core.common.GeppettoAccessException;
-//import org.geppetto.core.common.GeppettoExecutionException;
-//import org.geppetto.core.common.GeppettoInitializationException;
-//import org.geppetto.core.data.DataManagerHelper;
-//import org.geppetto.core.data.DefaultGeppettoDataManager;
-//import org.geppetto.core.data.model.ExperimentStatus;
-//import org.geppetto.core.data.model.IExperiment;
-//import org.geppetto.core.data.model.IGeppettoProject;
-//import org.geppetto.core.data.model.IUserGroup;
-//import org.geppetto.core.data.model.UserPrivileges;
-//import org.geppetto.core.manager.Scope;
-//import org.geppetto.core.services.registry.ApplicationListenerBean;
-//import org.geppetto.core.simulation.ISimulationRunExternalListener;
-//import org.geppetto.simulation.manager.GeppettoManager;
-//import org.geppetto.simulator.scidash.services.ScidashSimulatorService;
-//import org.junit.Assert;
-//import org.junit.BeforeClass;
-//import org.junit.FixMethodOrder;
-//import org.junit.Test;
-//import org.junit.runners.MethodSorters;
-//
-//import com.google.gson.Gson;
-//import com.google.gson.GsonBuilder;
-//import com.google.gson.JsonDeserializationContext;
-//import com.google.gson.JsonDeserializer;
-//import com.google.gson.JsonElement;
-//import com.google.gson.JsonParseException;
-//
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-//public class SimulationSciDashRunTest implements ISimulationRunExternalListener 
-//{	
-//	private static GeppettoManager manager = new GeppettoManager(Scope.CONNECTION);
-//	private static IGeppettoProject geppettoProject;
-//
-//	private static ScidashSimulatorService simulator;
-//	
-//	/**
-//	 * @throws java.lang.Exception
-//	 */
-//	@SuppressWarnings("deprecation")
-//	@BeforeClass
-//	public static void setUp() throws Exception
-//	{			
-//		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
-//		
-//		simulator = new ScidashSimulatorService(manager);
-//	}
-//	
-//	/**
-//	 * Test method for {@link org.geppetto.simulation.manager.frontend.controllers.GeppettoManager#setUser(org.geppetto.core.data.model.IUser)}.
-//	 * 
-//	 * @throws GeppettoExecutionException
-//	 */
-//	@Test
-//	public void test01SetUser() throws GeppettoExecutionException
-//	{
-//		long value = 1000l * 1000 * 1000;
-//		List<UserPrivileges> privileges = new ArrayList<UserPrivileges>();
-//		privileges.add(UserPrivileges.RUN_EXPERIMENT);
-//		privileges.add(UserPrivileges.READ_PROJECT);
-//		IUserGroup userGroup = DataManagerHelper.getDataManager().newUserGroup("unaccountableAristocrats", privileges, value, value * 2);
-//		manager.setUser(DataManagerHelper.getDataManager().newUser("nonna", "passauord", true, userGroup));
-//	}
-//
-//	/**
-//	 * Test method for {@link org.geppetto.simulation.manager.frontend.controllers.GeppettoManager#getUser()}.
-//	 */
-//	@Test
-//	public void test02GetUser()
-//	{
-//		Assert.assertEquals("nonna", manager.getUser().getName());
-//		Assert.assertEquals("passauord", manager.getUser().getPassword());
-//	}
-//	
-//	@Test
-//	public void test03LoadProject() throws IOException, GeppettoInitializationException, GeppettoExecutionException, GeppettoAccessException
-//	{
-//		InputStreamReader inputStreamReader = new InputStreamReader(SimulationSciDashRunTest.class.getResourceAsStream("/simulationNeuronTest/GEPPETTO.json"));
-//		geppettoProject = DataManagerHelper.getDataManager().getProjectFromJson(getGson(), inputStreamReader, null);
-//		manager.loadProject("1", geppettoProject);
-//
-//	}
-//
-//	@Test
-//	public void test04ExperimentNeuronRun() throws GeppettoExecutionException, GeppettoAccessException, InterruptedException
-//	{			
-//		List<? extends IExperiment> status = manager.checkExperimentsStatus("1", geppettoProject);
-//		Assert.assertEquals(1, status.size());
-//		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(0).getStatus());
-//		
-//		simulator.runExperiment(geppettoProject.getExperiments().get(0).getId(),geppettoProject.getId(), 232323232);
-//		
-//		Thread.sleep(90000);		
-//	}
-//	
-//	public static Gson getGson()
-//	{
-//		GsonBuilder builder = new GsonBuilder();
-//		builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>()
-//		{
-//			@Override
-//			public Date deserialize(JsonElement json, java.lang.reflect.Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-//			{
-//				return new Date(json.getAsJsonPrimitive().getAsLong());
-//			}
-//		});
-//		return builder.create();
-//	}
-//
-//	@Override
-//	public void simulationDone(IExperiment experiment) throws GeppettoExecutionException {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void simulationResultsReady(IExperiment experiment, List<URL> results) throws GeppettoExecutionException {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void simulationFailed(String errorMessage, Exception e, IExperiment experiment) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//}
+package org.geppetto.simulator.scidash.tests;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import junit.framework.Assert;
+
+import org.geppetto.core.beans.SimulatorConfig;
+import org.geppetto.core.common.GeppettoExecutionException;
+import org.geppetto.core.common.GeppettoInitializationException;
+import org.geppetto.core.data.model.IAspectConfiguration;
+import org.geppetto.core.data.model.ResultsFormat;
+import org.geppetto.core.data.model.local.LocalAspectConfiguration;
+import org.geppetto.core.data.model.local.LocalExperiment;
+import org.geppetto.core.services.registry.ServicesRegistry;
+import org.geppetto.core.simulation.ISimulatorCallbackListener;
+import org.geppetto.core.simulator.ExternalSimulatorConfig;
+import org.geppetto.model.ExperimentState;
+import org.geppetto.model.ExternalDomainModel;
+import org.geppetto.model.GeppettoFactory;
+import org.geppetto.simulator.external.services.NeuronSimulatorService;
+import org.geppetto.simulator.external.services.Utilities;
+import org.geppetto.simulator.scidash.services.ScidashSimulatorService;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class SimulationSciDashRunTest implements ISimulatorCallbackListener
+{
+
+	private static String dirToExecute;
+	private static String fileToExecute;
+	private static NeuronSimulatorService simulator;
+	private static String resultsDir;
+	private static boolean done = false;
+
+	@BeforeClass
+	public static void setup() throws GeppettoExecutionException
+	{
+		File dir = new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/").getFile());
+		dirToExecute = dir.getAbsolutePath();
+		fileToExecute = "/main_script.py";
+
+		simulator = new ScidashSimulatorService();
+		simulator.registerGeppettoService();
+
+		String neuron_home = System.getenv("NEURON_HOME");
+		ExternalSimulatorConfig externalConfig = new ExternalSimulatorConfig();
+		externalConfig.setSimulatorPath(neuron_home);
+		Assert.assertNotNull(externalConfig.getSimulatorPath());
+		simulator.setNeuronExternalSimulatorConfig(externalConfig);
+		SimulatorConfig simulatorConfig = new SimulatorConfig();
+		simulatorConfig.setSimulatorID("neuronSimulator");
+		simulatorConfig.setSimulatorName("neuronSimulator");
+		simulator.setNeuronSimulatorConfig(simulatorConfig);
+	}
+
+	/**
+	 * Test method for {@link org.geppetto.simulator.external.services.NeuronSimulatorService}.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testNeuronExecution() throws GeppettoExecutionException, GeppettoInitializationException, InterruptedException
+	{
+		ExternalDomainModel model = GeppettoFactory.eINSTANCE.createExternalDomainModel();
+		model.setFormat(ServicesRegistry.getModelFormat("NEURON"));
+		model.setDomainModel(dirToExecute + fileToExecute);
+		simulator.initialize(model, new LocalAspectConfiguration(1, "testModel", null, null, null), null, this, null);
+		simulator.setProjectId(1);
+		simulator.setExperiment(new LocalExperiment(1, null, null, null, null, null, null, null, null, null, null));
+		simulator.simulate();
+		Thread.sleep(50000);
+		Assert.assertTrue(done);
+	}
+
+	@Override
+	public void endOfSteps(IAspectConfiguration aspectConfiguration, Map<File, ResultsFormat> results)
+	{
+
+		resultsDir = dirToExecute + "results/";
+		BufferedReader input = null;
+		// will store values and variables found in DAT
+		HashMap<String, List<Float>> dataValues = new HashMap<String, List<Float>>();
+		try
+		{
+			// read DAT into a buffered reader
+			File dir = new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/results/ex5_vars.dat").getFile());
+
+			input = new BufferedReader(new FileReader(dir));
+
+			// read rest of DAT file and extract values
+			String line = input.readLine();
+			String[] columns = line.split("\\s+");
+
+			Assert.assertEquals(Float.valueOf(columns[0]), 0.0f);
+			Assert.assertEquals(Float.valueOf(columns[1]), 0.052932f);
+			Assert.assertEquals(Float.valueOf(columns[2]), 0.596121f);
+			Assert.assertEquals(Float.valueOf(columns[3]), 0.317677f);
+
+			input.close();
+
+			// read DAT into a buffered reader
+			dir = new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/results/ex5_v.dat").getFile());
+			input = new BufferedReader(new FileReader(dir));
+
+			// read rest of DAT file and extract values
+			line = input.readLine();
+			columns = line.split("\\s+");
+
+			Assert.assertEquals(Float.valueOf(columns[0]), 0.0f);
+			Assert.assertEquals(Float.valueOf(columns[1]), -0.065000f);
+
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		// handles End of file exception
+		finally
+		{
+			try
+			{
+				input.close();
+			}
+			catch(IOException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+
+		Assert.assertEquals(2, results.size());
+		done = true;
+	}
+
+	@AfterClass
+	public static void doYourOneTimeTeardown() throws IOException
+	{
+		 Utilities.delete(new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/results/").getFile()));
+		 Utilities.delete(new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/x86_64/").getFile()));
+		 Utilities.delete(new File(SimulationSciDashRunTest.class.getResource("/neuronConvertedModel/time.dat").getFile()));
+	}
+
+	@Override
+	public void externalProcessFailed(String message, Exception e)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}
