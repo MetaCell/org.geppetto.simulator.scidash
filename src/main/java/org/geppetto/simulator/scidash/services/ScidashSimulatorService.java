@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
@@ -20,6 +21,7 @@ import org.geppetto.core.common.GeppettoExecutionException;
 import org.geppetto.core.common.GeppettoInitializationException;
 import org.geppetto.core.data.model.IAspectConfiguration;
 import org.geppetto.core.data.model.IExperiment;
+import org.geppetto.core.data.model.IParameter;
 import org.geppetto.core.data.model.ResultsFormat;
 import org.geppetto.core.externalprocesses.ExternalProcess;
 import org.geppetto.core.manager.Scope;
@@ -54,33 +56,30 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			throws GeppettoInitializationException, GeppettoExecutionException
 	{
 		super.initialize(model, aspectConfiguration, experimentState, listener, modelAccess);
-		processToken = "123"; //FIXME : Replace with actual reading from aspect configuration's model parameters
+		processToken = getProcessToken(aspectConfiguration); //FIXME : Replace with actual reading from aspect configuration's model parameters
 	}
 	
-	@Override
-	public void simulate() throws GeppettoExecutionException {
-		// send command, directory where execution is happening, and path to original file script to execute
-		if(!started)
-		{
-			ExternalProcess process = new ExternalProcess(commands, directoryToExecuteFrom, originalFileName, this, outputFolder);
-			process.setName("External Process");
-			process.setProcessToken(processToken);
-			process.start();
-
-			this.externalProcesses.put(commands, process);
-			started = true;
+	public String getProcessToken(IAspectConfiguration ac) {
+		Random rand = new Random();
+		int  n = rand.nextInt(50) + 1;
+		String token = String.valueOf(n); //FIXME : Replace with actual reading from aspect configuration's model parameters
+		if(ac.getModelParameter()!=null) {
+			for(IParameter param : ac.getModelParameter()) {
+				if(param.getVariable().equals("processToken")) {
+					token = param.getValue();
+				}
+			}
 		}
-		else
-		{
-			throw new GeppettoExecutionException("Simulate has been called again");
-		}
+		
+		return token;
 	}
 	
-	private int sendResults(String tokenID, List<URL> results) {
+	private int sendResults(List<URL> results) {
+				
 		String resultsJSON = new Gson().toJson(results);
 				
 		JsonObject resultsPost = new JsonObject();
-		resultsPost.addProperty("userToken", tokenID);
+		resultsPost.addProperty("userToken", processToken);
 		resultsPost.addProperty("results", resultsJSON);
 		
 		int responseCode = 0;
@@ -126,9 +125,9 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 	}
 	
 	@Override
-	public void processDone(String token,String[] processCommand) throws GeppettoExecutionException
+	public void processDone(String[] processCommand) throws GeppettoExecutionException
 	{
-		super.processDone(token,processCommand);
+		super.processDone(processCommand);
 		
 		ExternalProcess process = this.getExternalProccesses().get(processCommand);
 		List<URL> resultsURL = new ArrayList<URL>();
@@ -182,7 +181,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			throw new GeppettoExecutionException(e);
 		}
 		
-		this.sendResults(token,resultsURL);
+		this.sendResults(resultsURL);
 	}
 
 	@Override
