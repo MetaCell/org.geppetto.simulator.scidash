@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geppetto.core.beans.PathConfiguration;
 import org.geppetto.core.beans.SimulatorConfig;
 import org.geppetto.core.common.GeppettoAccessException;
 import org.geppetto.core.common.GeppettoExecutionException;
@@ -48,6 +49,12 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+/**
+ * Tests the ScidashSimulatorService by running an experiment through a GeppettoManager instance. 
+ * This to test that the scidashSimulator bean is getting picked up from the app-config.xml, and that
+ * a scidash simulation can be run by a simulator instance created through spring bean creation.
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GeppettoManagerScidashRunExperimentTest
 {	
@@ -170,6 +177,18 @@ public class GeppettoManagerScidashRunExperimentTest
 		Assert.assertEquals(1, status.size());  
 		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(0).getStatus());  //test completion of experiment run
 		Assert.assertEquals(2, status.get(0).getSimulationResults().size());  //test experiment simulation list results
+	}
+	
+	@Test
+	public void test05DeleteProjectFiles() throws GeppettoExecutionException, IOException
+	{
+		File projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
+		Assert.assertTrue(projectTmPath.exists());
+
+		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, geppettoProject.getId());
+		
+		projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
+		Assert.assertFalse(projectTmPath.exists());
 	}
 	
 	public static Gson getGson()

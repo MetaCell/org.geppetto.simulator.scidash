@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +20,6 @@ import org.geppetto.core.beans.PathConfiguration;
 import org.geppetto.core.common.GeppettoExecutionException;
 import org.geppetto.core.common.GeppettoInitializationException;
 import org.geppetto.core.data.model.IAspectConfiguration;
-import org.geppetto.core.data.model.IExperiment;
 import org.geppetto.core.data.model.IParameter;
 import org.geppetto.core.data.model.ResultsFormat;
 import org.geppetto.core.externalprocesses.ExternalProcess;
@@ -45,8 +44,6 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 
 	@Autowired
 	private ScidashSimulatorConfig scidashSimulatorConfig;
-	
-	Map <Long,IExperiment> runningSimulations = new ConcurrentHashMap<>();
 	
 	private String processToken = "";
 	
@@ -192,6 +189,10 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 	@Override
 	public String getId() {
 		return this.scidashSimulatorConfig.getSimulatorID();
+	}
+	
+	public void deleteFiles(long projectID) throws IOException {
+		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, projectID);
 	}
 	
 	/**

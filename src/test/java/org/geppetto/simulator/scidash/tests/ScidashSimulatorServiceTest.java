@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geppetto.core.beans.PathConfiguration;
 import org.geppetto.core.beans.SimulatorConfig;
 import org.geppetto.core.common.GeppettoExecutionException;
 import org.geppetto.core.common.GeppettoInitializationException;
@@ -16,21 +17,29 @@ import org.geppetto.core.data.model.IAspectConfiguration;
 import org.geppetto.core.data.model.ResultsFormat;
 import org.geppetto.core.data.model.local.LocalAspectConfiguration;
 import org.geppetto.core.data.model.local.LocalExperiment;
+import org.geppetto.core.data.model.local.LocalGeppettoProject;
 import org.geppetto.core.data.model.local.LocalParameter;
+import org.geppetto.core.manager.Scope;
 import org.geppetto.core.services.registry.ServicesRegistry;
 import org.geppetto.core.simulation.ISimulatorCallbackListener;
 import org.geppetto.core.simulator.ExternalSimulatorConfig;
 import org.geppetto.model.ExternalDomainModel;
 import org.geppetto.model.GeppettoFactory;
-import org.geppetto.simulator.external.services.Utilities;
 import org.geppetto.simulator.scidash.config.ScidashSimulatorConfig;
 import org.geppetto.simulator.scidash.services.ScidashSimulatorService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import junit.framework.Assert;
 
+/**
+ * Tests the ScidashSimulatorService by direct instantiation.
+ *
+ */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ScidashSimulatorServiceTest implements ISimulatorCallbackListener
 {
 
@@ -83,12 +92,32 @@ public class ScidashSimulatorServiceTest implements ISimulatorCallbackListener
 		List<LocalParameter> modelParameters = new ArrayList<LocalParameter>();
 		LocalParameter param = new LocalParameter(0, "processToken", "12345");
 		modelParameters.add(param);
+		LocalGeppettoProject parent = new LocalGeppettoProject(1, "Parent Project", null, null);
+		LocalExperiment experiment = new LocalExperiment(1, null, null, null, null, null, null, null, null, null, parent);
 		simulator.initialize(model, new LocalAspectConfiguration(1, "testModel", null, modelParameters, null), null, this, null);
 		simulator.setProjectId(1);
-		simulator.setExperiment(new LocalExperiment(1, null, null, null, null, null, null, null, null, null, null));
+		simulator.setExperiment(experiment);
 		simulator.simulate();
 		Thread.sleep(50000);
 		Assert.assertTrue(done);
+	}
+	
+	@Test
+	public void testProjectFilesDeletion() throws GeppettoExecutionException, IOException
+	{
+		File projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, 1));
+		Assert.assertTrue(projectTmPath.exists());
+
+		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, 1);
+		
+		projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, 1));
+		Assert.assertFalse(projectTmPath.exists());
+	}
+	
+	@Test
+	public void testSendResults() throws GeppettoExecutionException, IOException
+	{
+		//TODO
 	}
 
 	@Override
@@ -149,15 +178,7 @@ public class ScidashSimulatorServiceTest implements ISimulatorCallbackListener
 		Assert.assertEquals(2, results.size());
 		done = true;
 	}
-
-	@AfterClass
-	public static void doYourOneTimeTeardown() throws IOException
-	{
-		 Utilities.delete(new File(ScidashSimulatorServiceTest.class.getResource("/neuronConvertedModel/results/").getFile()));
-		 Utilities.delete(new File(ScidashSimulatorServiceTest.class.getResource("/neuronConvertedModel/x86_64/").getFile()));
-		 Utilities.delete(new File(ScidashSimulatorServiceTest.class.getResource("/neuronConvertedModel/time.dat").getFile()));
-	}
-
+	
 	@Override
 	public void externalProcessFailed(String message, Exception e)
 	{

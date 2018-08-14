@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geppetto.core.beans.PathConfiguration;
 import org.geppetto.core.beans.SimulatorConfig;
 import org.geppetto.core.common.GeppettoAccessException;
 import org.geppetto.core.common.GeppettoExecutionException;
@@ -48,6 +49,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+/**
+ * Runs multiple experiments which use scidashSimulator. 
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MultipleSimulationSciDashRunTest
 {	
@@ -156,7 +161,16 @@ public class MultipleSimulationSciDashRunTest
 		List<? extends IExperiment> status = manager.checkExperimentsStatus("1", geppettoProject);
 		Assert.assertEquals(5, status.size());
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(0).getStatus());  //test design status on experiment
+		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(1).getStatus());  //test design status on experiment
+		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(2).getStatus());  //test design status on experiment
+		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(3).getStatus());  //test design status on experiment
+		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(4).getStatus());  //test design status on experiment
+		
 		Assert.assertEquals(0, status.get(0).getSimulationResults().size());  //test empty experiment results list pre-running
+		Assert.assertEquals(0, status.get(1).getSimulationResults().size());  //test empty experiment results list pre-running
+		Assert.assertEquals(0, status.get(2).getSimulationResults().size());  //test empty experiment results list pre-running
+		Assert.assertEquals(0, status.get(3).getSimulationResults().size());  //test empty experiment results list pre-running
+		Assert.assertEquals(0, status.get(4).getSimulationResults().size());  //test empty experiment results list pre-running
 		
 		manager.runExperiment("1",geppettoProject.getExperiments().get(0));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(1));
@@ -164,16 +178,37 @@ public class MultipleSimulationSciDashRunTest
 		manager.runExperiment("1",geppettoProject.getExperiments().get(3));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(4));
 		
-		Thread.sleep(50000);
+		Thread.sleep(150000);
 		
-		status = manager.checkExperimentsStatus("1", geppettoProject);
-		if(status.get(0).getStatus() == ExperimentStatus.RUNNING) {
+		status = manager.checkExperimentsStatus("5", geppettoProject);
+		if(status.get(0).getStatus() != ExperimentStatus.COMPLETED) {
 			Thread.sleep(30000);
 		}
 		status = manager.checkExperimentsStatus("1", geppettoProject);
-		Assert.assertEquals(1, status.size());  
+		Assert.assertEquals(5, status.size());  
 		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(0).getStatus());  //test completion of experiment run
+		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(1).getStatus());  //test completion of experiment run
+		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(2).getStatus());  //test completion of experiment run
+		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(3).getStatus());  //test completion of experiment run
+		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(4).getStatus());  //test completion of experiment run
+
 		Assert.assertEquals(2, status.get(0).getSimulationResults().size());  //test experiment simulation list results
+		Assert.assertEquals(2, status.get(1).getSimulationResults().size());  //test experiment simulation list results
+		Assert.assertEquals(2, status.get(2).getSimulationResults().size());  //test experiment simulation list results
+		Assert.assertEquals(2, status.get(3).getSimulationResults().size());  //test experiment simulation list results
+		Assert.assertEquals(2, status.get(4).getSimulationResults().size());  //test experiment simulation list results
+	}
+	
+	@Test
+	public void test05DeleteProjectFiles() throws GeppettoExecutionException, IOException
+	{
+		File projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
+		Assert.assertTrue(projectTmPath.exists());
+
+		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, geppettoProject.getId());
+		
+		projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
+		Assert.assertFalse(projectTmPath.exists());
 	}
 	
 	public static Gson getGson()
