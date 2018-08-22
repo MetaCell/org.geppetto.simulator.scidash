@@ -61,7 +61,12 @@ public class GeppettoManagerScidashRunExperimentTest
 	private static Log logger = LogFactory.getLog(GeppettoManagerScidashRunExperimentTest.class);
 	private static GeppettoManager manager = new GeppettoManager(Scope.CONNECTION);
 	private static IGeppettoProject geppettoProject;
-	
+	private String username = "scidashUser";
+	private String password = "password";
+
+	public void setUser(String username) {
+		this.username = username;
+	}
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -75,7 +80,7 @@ public class GeppettoManagerScidashRunExperimentTest
 		BeanDefinition lemsModelInterpreterBeanDefinition = new RootBeanDefinition(LEMSModelInterpreterService.class);
 		BeanDefinition conversionServiceBeanDefinition = new RootBeanDefinition(LEMSConversionService.class);
 		BeanDefinition neuronSimulatorServiceBeanDefinition = new RootBeanDefinition(NeuronSimulatorService.class);
-		
+
 		context.registerBeanDefinition("neuroMLModelInterpreter", neuroMLModelInterpreterBeanDefinition);
 		context.registerBeanDefinition("scopedTarget.neuroMLModelInterpreter", neuroMLModelInterpreterBeanDefinition);
 		context.registerBeanDefinition("lemsModelInterpreter", lemsModelInterpreterBeanDefinition);
@@ -86,22 +91,22 @@ public class GeppettoManagerScidashRunExperimentTest
 		context.registerBeanDefinition("scopedTarget.neuronSimulator", neuronSimulatorServiceBeanDefinition);		
 		context.registerBeanDefinition("scidashSimulator", scidashSimulatorServiceBeanDefinition);
 		context.registerBeanDefinition("scopedTarget.scidashSimulator", scidashSimulatorServiceBeanDefinition);
-		
+
 		ContextRefreshedEvent event = new ContextRefreshedEvent(context);
 		ApplicationListenerBean listener = new ApplicationListenerBean();
 		listener.onApplicationEvent(event);
 		ApplicationContext retrievedContext = ApplicationListenerBean.getApplicationContext("scidashSimulator");
 		Assert.assertNotNull(retrievedContext.getBean("scopedTarget.scidashSimulator"));
 		Assert.assertTrue(retrievedContext.getBean("scopedTarget.scidashSimulator") instanceof ScidashSimulatorService);
-		
+
 		String neuron_home = System.getenv("NEURON_HOME");
 		if (!(new File(neuron_home+"/nrniv")).exists())
 		{
-		    neuron_home = System.getenv("NEURON_HOME")+"/bin/";
-		    if (!(new File(neuron_home+"/nrniv")).exists())
-		    {
-		        throw new GeppettoExecutionException("Please set the environment variable NEURON_HOME to point to your local install of NEURON 7.4");
-		    }
+			neuron_home = System.getenv("NEURON_HOME")+"/bin/";
+			if (!(new File(neuron_home+"/nrniv")).exists())
+			{
+				throw new GeppettoExecutionException("Please set the environment variable NEURON_HOME to point to your local install of NEURON 7.4");
+			}
 		}
 		ExternalSimulatorConfig externalConfig = new ExternalSimulatorConfig();
 		externalConfig.setSimulatorPath(neuron_home);
@@ -109,19 +114,19 @@ public class GeppettoManagerScidashRunExperimentTest
 		SimulatorConfig neuronSimulatorConfig = new SimulatorConfig();
 		neuronSimulatorConfig.setSimulatorID("neuronSimulator");
 		neuronSimulatorConfig.setSimulatorName("neuronSimulator");
-		
+
 		ScidashSimulatorConfig scidashSimulatorConfig = new ScidashSimulatorConfig();
 		scidashSimulatorConfig.setSimulatorID("scidashSimulator");
 		scidashSimulatorConfig.setSimulatorName("scidashSimulator");
-		scidashSimulatorConfig.setServerURL("http://ptsv2.com/t/lhsxx-1533830882/post");
+		scidashSimulatorConfig.setServerURL("https://jira.spring.io/browse/SPR-11250");
 
 		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setScidashSimulatorConfig(scidashSimulatorConfig);
 		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setNeuronExternalSimulatorConfig(externalConfig);
 		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setNeuronSimulatorConfig(neuronSimulatorConfig);
-				
+
 		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
 	}
-	
+
 	/**
 	 * Test method for {@link org.geppetto.simulation.manager.frontend.controllers.GeppettoManager#setUser(org.geppetto.core.data.model.IUser)}.
 	 * 
@@ -135,7 +140,7 @@ public class GeppettoManagerScidashRunExperimentTest
 		privileges.add(UserPrivileges.RUN_EXPERIMENT);
 		privileges.add(UserPrivileges.READ_PROJECT);
 		IUserGroup userGroup = DataManagerHelper.getDataManager().newUserGroup("unaccountableAristocrats", privileges, value, value * 2);
-		manager.setUser(DataManagerHelper.getDataManager().newUser("scidashtestuser", "passauord", true, userGroup));
+		manager.setUser(DataManagerHelper.getDataManager().newUser(username, password, true, userGroup));
 	}
 
 	/**
@@ -144,10 +149,10 @@ public class GeppettoManagerScidashRunExperimentTest
 	@Test
 	public void test02GetUser()
 	{
-		Assert.assertEquals("scidashtestuser", manager.getUser().getName());
-		Assert.assertEquals("passauord", manager.getUser().getPassword());
+		Assert.assertEquals(username, manager.getUser().getName());
+		Assert.assertEquals(password, manager.getUser().getPassword());
 	}
-	
+
 	@Test
 	public void test03LoadProject() throws IOException, GeppettoInitializationException, GeppettoExecutionException, GeppettoAccessException
 	{
@@ -164,11 +169,11 @@ public class GeppettoManagerScidashRunExperimentTest
 		Assert.assertEquals(1, status.size());
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(0).getStatus());  //test design status on experiment
 		Assert.assertEquals(0, status.get(0).getSimulationResults().size());  //test empty experiment results list pre-running
-		
+
 		manager.runExperiment("1",geppettoProject.getExperiments().get(0));
-		
+
 		Thread.sleep(50000);
-		
+
 		status = manager.checkExperimentsStatus("1", geppettoProject);
 		if(status.get(0).getStatus() == ExperimentStatus.RUNNING) {
 			Thread.sleep(30000);
@@ -178,7 +183,7 @@ public class GeppettoManagerScidashRunExperimentTest
 		Assert.assertEquals(ExperimentStatus.COMPLETED, status.get(0).getStatus());  //test completion of experiment run
 		Assert.assertEquals(2, status.get(0).getSimulationResults().size());  //test experiment simulation list results
 	}
-	
+
 	@Test
 	public void test05DeleteProjectFiles() throws GeppettoExecutionException, IOException
 	{
@@ -186,11 +191,11 @@ public class GeppettoManagerScidashRunExperimentTest
 		Assert.assertTrue(projectTmPath.exists());
 
 		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, geppettoProject.getId());
-		
+
 		projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
 		Assert.assertFalse(projectTmPath.exists());
 	}
-	
+
 	public static Gson getGson()
 	{
 		GsonBuilder builder = new GsonBuilder();

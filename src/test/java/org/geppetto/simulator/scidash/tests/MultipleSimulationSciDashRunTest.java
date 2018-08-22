@@ -35,11 +35,16 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import com.google.gson.Gson;
@@ -53,13 +58,16 @@ import com.google.gson.JsonParseException;
  * Runs multiple experiments which use scidashSimulator. 
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:/META-INF/spring/app-config.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MultipleSimulationSciDashRunTest
 {	
 	private static Log logger = LogFactory.getLog(GeppettoManagerScidashRunExperimentTest.class);
 	private static GeppettoManager manager = new GeppettoManager(Scope.CONNECTION);
 	private static IGeppettoProject geppettoProject;
-	
+	private static GenericWebApplicationContext context;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -67,13 +75,52 @@ public class MultipleSimulationSciDashRunTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		GenericWebApplicationContext context = new GenericWebApplicationContext();
-		BeanDefinition scidashSimulatorServiceBeanDefinition = new RootBeanDefinition(ScidashSimulatorService.class);
+		context = new GenericWebApplicationContext();
+
+		String neuron_home = System.getenv("NEURON_HOME");
+		if (!(new File(neuron_home+"/nrniv")).exists())
+		{
+			neuron_home = System.getenv("NEURON_HOME")+"/bin/";
+			if (!(new File(neuron_home+"/nrniv")).exists())
+			{
+				throw new GeppettoExecutionException("Please set the environment variable NEURON_HOME to point to your local install of NEURON 7.4");
+			}
+		}
+
+		//Create configuration beans used by neuron and scidash services
+		BeanDefinition scidashConfiguration = new RootBeanDefinition(ScidashSimulatorConfig.class);
+		BeanDefinition neuronConfiguration = new RootBeanDefinition(SimulatorConfig.class);
+		BeanDefinition neuronExternalConfig = new RootBeanDefinition(ExternalSimulatorConfig.class);
+
+		//register config beans with spring context
+		context.registerBeanDefinition("neuronExternalSimulatorConfig", neuronExternalConfig);
+		context.registerBeanDefinition("neuronSimulatorConfig", neuronConfiguration);
+		context.registerBeanDefinition("scidashSimulatorConfig", scidashConfiguration);
+
+		//retrieve config beans from context and set properties 
+		((ExternalSimulatorConfig)context.getBean("neuronExternalSimulatorConfig")).setSimulatorPath(neuron_home);
+		((SimulatorConfig)context.getBean("neuronSimulatorConfig")).setSimulatorID("neuronSimulator");
+		((SimulatorConfig)context.getBean("neuronSimulatorConfig")).setSimulatorID("neuronSimulator");
+		((ScidashSimulatorConfig)context.getBean("scidashSimulatorConfig")).setSimulatorName("scidashSimulator");
+		((ScidashSimulatorConfig)context.getBean("scidashSimulatorConfig")).setSimulatorID("scidashSimulator");
+		((ScidashSimulatorConfig)context.getBean("scidashSimulatorConfig")).setServerURL("http://ptsv2.com/t/ykj4f-1534932468/post");
+
+		//needed to have newly created config beans available at time of services creation
+		context.refresh();
+
+		//create the different spring services ussed by geppetto
+		BeanDefinition scidashSimulatorServiceBeanDefinition = new RootBeanDefinition(ScidashSimulatorService.class,2);
+		scidashSimulatorServiceBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
 		BeanDefinition neuroMLModelInterpreterBeanDefinition = new RootBeanDefinition(NeuroMLModelInterpreterService.class);
+		neuroMLModelInterpreterBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
 		BeanDefinition lemsModelInterpreterBeanDefinition = new RootBeanDefinition(LEMSModelInterpreterService.class);
+		lemsModelInterpreterBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
 		BeanDefinition conversionServiceBeanDefinition = new RootBeanDefinition(LEMSConversionService.class);
+		conversionServiceBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
 		BeanDefinition neuronSimulatorServiceBeanDefinition = new RootBeanDefinition(NeuronSimulatorService.class);
-		
+		neuronSimulatorServiceBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
+
+		//register services beans with context
 		context.registerBeanDefinition("neuroMLModelInterpreter", neuroMLModelInterpreterBeanDefinition);
 		context.registerBeanDefinition("scopedTarget.neuroMLModelInterpreter", neuroMLModelInterpreterBeanDefinition);
 		context.registerBeanDefinition("lemsModelInterpreter", lemsModelInterpreterBeanDefinition);
@@ -84,42 +131,17 @@ public class MultipleSimulationSciDashRunTest
 		context.registerBeanDefinition("scopedTarget.neuronSimulator", neuronSimulatorServiceBeanDefinition);		
 		context.registerBeanDefinition("scidashSimulator", scidashSimulatorServiceBeanDefinition);
 		context.registerBeanDefinition("scopedTarget.scidashSimulator", scidashSimulatorServiceBeanDefinition);
-		
+
 		ContextRefreshedEvent event = new ContextRefreshedEvent(context);
 		ApplicationListenerBean listener = new ApplicationListenerBean();
 		listener.onApplicationEvent(event);
 		ApplicationContext retrievedContext = ApplicationListenerBean.getApplicationContext("scidashSimulator");
-		Assert.assertNotNull(retrievedContext.getBean("scopedTarget.scidashSimulator"));
+		Assert.assertNotNull(retrievedContext.getBean("scopedTarget.scidashSimulator"));		
 		Assert.assertTrue(retrievedContext.getBean("scopedTarget.scidashSimulator") instanceof ScidashSimulatorService);
-		
-		String neuron_home = System.getenv("NEURON_HOME");
-		if (!(new File(neuron_home+"/nrniv")).exists())
-		{
-		    neuron_home = System.getenv("NEURON_HOME")+"/bin/";
-		    if (!(new File(neuron_home+"/nrniv")).exists())
-		    {
-		        throw new GeppettoExecutionException("Please set the environment variable NEURON_HOME to point to your local install of NEURON 7.4");
-		    }
-		}
-		ExternalSimulatorConfig externalConfig = new ExternalSimulatorConfig();
-		externalConfig.setSimulatorPath(neuron_home);
-		Assert.assertNotNull(externalConfig.getSimulatorPath());
-		SimulatorConfig neuronSimulatorConfig = new SimulatorConfig();
-		neuronSimulatorConfig.setSimulatorID("neuronSimulator");
-		neuronSimulatorConfig.setSimulatorName("neuronSimulator");
-		
-		ScidashSimulatorConfig scidashSimulatorConfig = new ScidashSimulatorConfig();
-		scidashSimulatorConfig.setSimulatorID("scidashSimulator");
-		scidashSimulatorConfig.setSimulatorName("scidashSimulator");
-		scidashSimulatorConfig.setServerURL("http://ptsv2.com/t/lhsxx-1533830882/post");
 
-		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setScidashSimulatorConfig(scidashSimulatorConfig);
-		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setNeuronExternalSimulatorConfig(externalConfig);
-		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setNeuronSimulatorConfig(neuronSimulatorConfig);
-				
 		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
 	}
-	
+
 	/**
 	 * Test method for {@link org.geppetto.simulation.manager.frontend.controllers.GeppettoManager#setUser(org.geppetto.core.data.model.IUser)}.
 	 * 
@@ -145,7 +167,7 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertEquals("scidashtestuser", manager.getUser().getName());
 		Assert.assertEquals("passauord", manager.getUser().getPassword());
 	}
-	
+
 	@Test
 	public void test03LoadProject() throws IOException, GeppettoInitializationException, GeppettoExecutionException, GeppettoAccessException
 	{
@@ -165,21 +187,21 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(2).getStatus());  //test design status on experiment
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(3).getStatus());  //test design status on experiment
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(4).getStatus());  //test design status on experiment
-		
+
 		Assert.assertEquals(0, status.get(0).getSimulationResults().size());  //test empty experiment results list pre-running
 		Assert.assertEquals(0, status.get(1).getSimulationResults().size());  //test empty experiment results list pre-running
 		Assert.assertEquals(0, status.get(2).getSimulationResults().size());  //test empty experiment results list pre-running
 		Assert.assertEquals(0, status.get(3).getSimulationResults().size());  //test empty experiment results list pre-running
 		Assert.assertEquals(0, status.get(4).getSimulationResults().size());  //test empty experiment results list pre-running
-		
+
 		manager.runExperiment("1",geppettoProject.getExperiments().get(0));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(1));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(2));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(3));
 		manager.runExperiment("1",geppettoProject.getExperiments().get(4));
-		
+
 		Thread.sleep(150000);
-		
+
 		status = manager.checkExperimentsStatus("5", geppettoProject);
 		if(status.get(0).getStatus() != ExperimentStatus.COMPLETED) {
 			Thread.sleep(30000);
@@ -198,7 +220,7 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertEquals(2, status.get(3).getSimulationResults().size());  //test experiment simulation list results
 		Assert.assertEquals(2, status.get(4).getSimulationResults().size());  //test experiment simulation list results
 	}
-	
+
 	@Test
 	public void test05DeleteProjectFiles() throws GeppettoExecutionException, IOException
 	{
@@ -206,11 +228,11 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertTrue(projectTmPath.exists());
 
 		PathConfiguration.deleteProjectTmpFolder(Scope.RUN, geppettoProject.getId());
-		
+
 		projectTmPath = new File(PathConfiguration.getProjectTmpPath(Scope.RUN, geppettoProject.getId()));
 		Assert.assertFalse(projectTmPath.exists());
 	}
-	
+
 	public static Gson getGson()
 	{
 		GsonBuilder builder = new GsonBuilder();
