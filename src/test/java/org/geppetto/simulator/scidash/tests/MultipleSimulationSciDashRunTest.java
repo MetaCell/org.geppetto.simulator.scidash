@@ -77,6 +77,9 @@ public class MultipleSimulationSciDashRunTest
 	{
 		context = new GenericWebApplicationContext();
 
+		//needed to have newly created config beans available at time of services creation
+		context.refresh();
+
 		String neuron_home = System.getenv("NEURON_HOME");
 		if (!(new File(neuron_home+"/nrniv")).exists())
 		{
@@ -105,11 +108,9 @@ public class MultipleSimulationSciDashRunTest
 		((ScidashSimulatorConfig)context.getBean("scidashSimulatorConfig")).setSimulatorID("scidashSimulator");
 		((ScidashSimulatorConfig)context.getBean("scidashSimulatorConfig")).setServerURL("http://ptsv2.com/t/ykj4f-1534932468/post");
 
-		//needed to have newly created config beans available at time of services creation
-		context.refresh();
 
 		//create the different spring services ussed by geppetto
-		BeanDefinition scidashSimulatorServiceBeanDefinition = new RootBeanDefinition(ScidashSimulatorService.class,2);
+		BeanDefinition scidashSimulatorServiceBeanDefinition = new RootBeanDefinition(ScidashSimulatorService.class,2,false);
 		scidashSimulatorServiceBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
 		BeanDefinition neuroMLModelInterpreterBeanDefinition = new RootBeanDefinition(NeuroMLModelInterpreterService.class);
 		neuroMLModelInterpreterBeanDefinition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
