@@ -132,7 +132,7 @@
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
 						<Include-Resource>
-							{maven-resources},META-INF/spring=src/main/java/META-INF/spring,src/main/resources
+							{maven-resources},META-INF/spring=src/main/java/META-INF/spring
 						</Include-Resource>
 					</instructions>
 				</configuration>
