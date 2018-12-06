@@ -114,6 +114,9 @@
 				<version>2.15</version>
 				<configuration>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<excludes>
+            			<exclude>**/MultipleSimulationSciDashRunTest.java</exclude>
+          			</excludes>
 				</configuration>	
 			</plugin>
 			<plugin>
