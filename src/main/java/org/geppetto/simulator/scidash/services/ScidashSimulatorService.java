@@ -33,7 +33,7 @@ import com.google.gson.JsonObject;
 public class ScidashSimulatorService extends NeuronSimulatorService{
 
 	private static final String EXPERIMENT_RESULTS = "experiment_results";
-	private static final String EXPERIMENT_Error = "experiment_error";
+	private static final String EXPERIMENT_ERROR = "experiment_error";
 	private static final String EXPERIMENT_NAME = "experiment_name";
 	private static final String SCORE_ID = "scoreID";
 
@@ -150,7 +150,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 		JsonObject resultsPost = new JsonObject();
 		resultsPost.addProperty(SCORE_ID, processToken);
 		resultsPost.addProperty(EXPERIMENT_NAME, this.getExperiment().getName());
-		resultsPost.addProperty(EXPERIMENT_RESULTS, error);
+		resultsPost.addProperty(EXPERIMENT_ERROR, error);
 
 		String response = "";
 		//HTTP Post request happens here
