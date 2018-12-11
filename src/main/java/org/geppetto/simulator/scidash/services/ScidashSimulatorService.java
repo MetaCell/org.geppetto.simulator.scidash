@@ -89,7 +89,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			logger.info(response);			
 
 		} catch (Exception e) {
-			logger.error("Error uploadiing results to " + this.scidashSimulatorConfig.getServerURL());
+			logger.error("Error uploading results to " + this.scidashSimulatorConfig.getServerURL());
 			logger.error(e.getMessage());
 		}
 
@@ -160,7 +160,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			logger.info(response);			
 
 		} catch (Exception e1) {
-			logger.error("Error uploadiing results to " + this.scidashSimulatorConfig.getServerURL());
+			logger.error("Error uploading results to " + this.scidashSimulatorConfig.getServerURL());
 			logger.error(e1.getMessage());
 		}
 	}
