@@ -145,6 +145,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 	
 	@Override
 	public void processFailed(String errorMessage, Exception e){
+		this.processFailed(errorMessage, e);
 		String error = new Gson().toJson(e);		
 		JsonObject resultsPost = new JsonObject();
 		resultsPost.addProperty(SCORE_ID, processToken);
