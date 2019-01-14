@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 public class ScidashSimulatorService extends NeuronSimulatorService{
 
 	private static final String EXPERIMENT_RESULTS = "experiment_results";
+	private static final String EXPERIMENT_ERROR = "experiment_error";
 	private static final String EXPERIMENT_NAME = "experiment_name";
 	private static final String SCORE_ID = "scoreID";
 
@@ -88,7 +89,7 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 			logger.info(response);			
 
 		} catch (Exception e) {
-			logger.error("Error uploadiing results to " + this.scidashSimulatorConfig.getServerURL());
+			logger.error("Error uploading results to " + this.scidashSimulatorConfig.getServerURL());
 			logger.error(e.getMessage());
 		}
 
@@ -140,5 +141,26 @@ public class ScidashSimulatorService extends NeuronSimulatorService{
 	public void setScidashSimulatorConfig(ScidashSimulatorConfig scidashSimulatorConfig)
 	{
 		this.scidashSimulatorConfig = scidashSimulatorConfig;
+	}
+	
+	@Override
+	public void processFailed(String errorMessage, Exception e){
+		String error = new Gson().toJson(e);		
+		JsonObject resultsPost = new JsonObject();
+		resultsPost.addProperty(SCORE_ID, processToken);
+		resultsPost.addProperty(EXPERIMENT_NAME, this.getExperiment().getName());
+		resultsPost.addProperty(EXPERIMENT_ERROR, error);
+
+		String response = "";
+		//HTTP Post request happens here
+		try {
+			response =
+					GeppettoHTTPClient.doJSONPost(scidashSimulatorConfig.getServerURL(), resultsPost.toString());
+			logger.info(response);			
+
+		} catch (Exception e1) {
+			logger.error("Error uploading results to " + this.scidashSimulatorConfig.getServerURL());
+			logger.error(e1.getMessage());
+		}
 	}
 }

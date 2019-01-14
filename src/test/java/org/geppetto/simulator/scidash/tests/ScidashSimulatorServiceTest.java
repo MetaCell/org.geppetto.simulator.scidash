@@ -61,6 +61,14 @@ public class ScidashSimulatorServiceTest implements ISimulatorCallbackListener
 		simulator.registerGeppettoService();
 
 		String neuron_home = System.getenv("NEURON_HOME");
+		if (!(new File(neuron_home+"/nrniv")).exists())
+		{
+			neuron_home = System.getenv("NEURON_HOME")+"/bin/";
+			if (!(new File(neuron_home+"/nrniv")).exists())
+			{
+				throw new GeppettoExecutionException("Please set the environment variable NEURON_HOME to point to your local install of NEURON 7.4");
+			}
+		}
 		ExternalSimulatorConfig externalConfig = new ExternalSimulatorConfig();
 		externalConfig.setSimulatorPath(neuron_home);
 		Assert.assertNotNull(externalConfig.getSimulatorPath());

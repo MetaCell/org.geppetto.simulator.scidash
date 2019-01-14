@@ -94,6 +94,7 @@ public class GeppettoManagerScidashRunExperimentTest
 
 		ContextRefreshedEvent event = new ContextRefreshedEvent(context);
 		ApplicationListenerBean listener = new ApplicationListenerBean();
+		context.refresh();
 		listener.onApplicationEvent(event);
 		ApplicationContext retrievedContext = ApplicationListenerBean.getApplicationContext("scidashSimulator");
 		Assert.assertNotNull(retrievedContext.getBean("scopedTarget.scidashSimulator"));
