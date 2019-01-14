@@ -13,6 +13,13 @@
 	<context:annotation-config/>	
 	<context:component-scan base-package="org.geppetto.simulator.scidash.services" />
 		
+	<!-- Add flag for Simulation Run Mode --> 
+	<bean id="scidashSimulatorConfig" class="org.geppetto.simulator.scidash.config.ScidashSimulatorConfig"> 
+		<property name="simulatorName" value="SciDash Simulator" />
+		<property name="simulatorID" value="scidashSimulator" />
+		<property name="serverURL" value="http://ptsv2.com/t/lhsxx-1533830882/post" />
+	</bean>
+	
 	<bean id="neuronSimulatorConfig" class="org.geppetto.core.beans.SimulatorConfig"> 
 		<property name="simulatorName" value="Neuron Simulator" />
 		<property name="simulatorID" value="neuronSimulator" />
@@ -23,10 +30,4 @@
 		<property name="simulatorPath" value="/usr/local/nrn/x86_64/bin/" />
 	</bean>
 	
-	<!-- Add flag for Simulation Run Mode --> 
-	<bean id="scidashSimulatorConfig" class="org.geppetto.simulator.scidash.config.ScidashSimulatorConfig"> 
-		<property name="simulatorName" value="SciDash Simulator" />
-		<property name="simulatorID" value="scidashSimulator" />
-		<property name="serverURL" value="http://ptsv2.com/t/lhsxx-1533830882/post" />
-	</bean>
 </beans>
