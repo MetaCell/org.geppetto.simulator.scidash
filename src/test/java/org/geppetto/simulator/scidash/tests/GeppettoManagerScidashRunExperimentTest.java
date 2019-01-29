@@ -126,6 +126,8 @@ public class GeppettoManagerScidashRunExperimentTest
 		((ScidashSimulatorService)retrievedContext.getBean("scopedTarget.scidashSimulator")).setNeuronSimulatorConfig(neuronSimulatorConfig);
 
 		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
+		
+		manager.setAllowVolatileProjectsSimulation(true);
 	}
 
 	/**
@@ -171,7 +173,7 @@ public class GeppettoManagerScidashRunExperimentTest
 		Assert.assertEquals(ExperimentStatus.DESIGN, status.get(0).getStatus());  //test design status on experiment
 		Assert.assertEquals(0, status.get(0).getSimulationResults().size());  //test empty experiment results list pre-running
 
-		manager.runExperiment("1",geppettoProject.getExperiments().get(0));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(0));
 
 		Thread.sleep(50000);
 

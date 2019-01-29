@@ -141,6 +141,8 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertTrue(retrievedContext.getBean("scopedTarget.scidashSimulator") instanceof ScidashSimulatorService);
 
 		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
+		
+		manager.setAllowVolatileProjectsSimulation(true);
 	}
 
 	/**
@@ -195,11 +197,11 @@ public class MultipleSimulationSciDashRunTest
 		Assert.assertEquals(0, status.get(3).getSimulationResults().size());  //test empty experiment results list pre-running
 		Assert.assertEquals(0, status.get(4).getSimulationResults().size());  //test empty experiment results list pre-running
 
-		manager.runExperiment("1",geppettoProject.getExperiments().get(0));
-		manager.runExperiment("1",geppettoProject.getExperiments().get(1));
-		manager.runExperiment("1",geppettoProject.getExperiments().get(2));
-		manager.runExperiment("1",geppettoProject.getExperiments().get(3));
-		manager.runExperiment("1",geppettoProject.getExperiments().get(4));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(0));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(1));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(2));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(3));
+		manager.runExperiment("1", geppettoProject.getExperiments().get(4));
 
 		Thread.sleep(150000);
 
