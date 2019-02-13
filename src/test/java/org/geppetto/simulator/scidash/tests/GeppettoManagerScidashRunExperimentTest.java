@@ -27,6 +27,7 @@ import org.geppetto.core.simulator.ExternalSimulatorConfig;
 import org.geppetto.model.neuroml.services.LEMSConversionService;
 import org.geppetto.model.neuroml.services.LEMSModelInterpreterService;
 import org.geppetto.model.neuroml.services.NeuroMLModelInterpreterService;
+import org.geppetto.simulation.GeppettoManagerConfiguration;
 import org.geppetto.simulation.manager.GeppettoManager;
 import org.geppetto.simulator.external.services.NeuronSimulatorService;
 import org.geppetto.simulator.scidash.config.ScidashSimulatorConfig;
@@ -59,7 +60,7 @@ import com.google.gson.JsonParseException;
 public class GeppettoManagerScidashRunExperimentTest
 {	
 	private static Log logger = LogFactory.getLog(GeppettoManagerScidashRunExperimentTest.class);
-	private static GeppettoManager manager = new GeppettoManager(Scope.CONNECTION);
+	private static GeppettoManager manager;
 	private static IGeppettoProject geppettoProject;
 	private String username = "scidashUser";
 	private String password = "password";
@@ -127,7 +128,9 @@ public class GeppettoManagerScidashRunExperimentTest
 
 		DataManagerHelper.setDataManager(new DefaultGeppettoDataManager());
 		
-		manager.setAllowVolatileProjectsSimulation(true);
+		GeppettoManagerConfiguration geppettoManagerConfiguration = new GeppettoManagerConfiguration();
+		geppettoManagerConfiguration.setAllowVolatileProjectsSimulation(true);
+		manager = new GeppettoManager(Scope.CONNECTION, geppettoManagerConfiguration);
 	}
 
 	/**
