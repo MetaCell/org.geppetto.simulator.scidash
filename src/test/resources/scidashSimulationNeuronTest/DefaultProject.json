@@ -29,7 +29,7 @@
    ],
    "geppettoModel":{
       "id":1,
-      "url":"https://raw.githubusercontent.com/MetaCell/pygeppetto-django/development-roman/pygeppetto_gateway/templates/model_template.xmi",
+      "url":"https://raw.githubusercontent.com/openworm/org.geppetto.samples/development/UsedInUnitTests/SingleComponentHH/GeppettoModel.xmi",
       "type":"GEPPETTO_PROJECT"
    }
 }
