@@ -10,7 +10,7 @@
          "aspectConfigurations":[
             {
                "id":1,
-               "instance":"",
+               "instance":"hhcell",
                "simulatorConfiguration":{
                   "id":1,
                   "simulatorId":"scidashSimulator",
