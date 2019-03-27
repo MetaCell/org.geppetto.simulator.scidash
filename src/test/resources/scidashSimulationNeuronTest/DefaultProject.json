@@ -18,7 +18,6 @@
                   "timestep":0.00005,
                   "length":0.3,
                   "parameters": {
-                    "target": "net1",
                     "scoreID": "1"
                   },
                   "watchedVariables": []
