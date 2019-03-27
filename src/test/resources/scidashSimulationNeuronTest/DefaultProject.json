@@ -1,0 +1,35 @@
+{
+   "id":1,
+   "name":"${project_name}",
+   "activeExperimentId":1,
+   "experiments":[
+      {
+         "id":1,
+         "name":"${project_name}",
+         "status":"DESIGN",
+         "aspectConfigurations":[
+            {
+               "id":1,
+               "instance":"",
+               "simulatorConfiguration":{
+                  "id":1,
+                  "simulatorId":"scidashSimulator",
+                  "conversionServiceId": "lemsConversion",
+                  "timestep":0.00005,
+                  "length":0.3,
+                  "parameters": {
+                    "target": "net1",
+                    "scoreID": "1"
+                  },
+                  "watchedVariables": []
+                }
+            }
+         ]
+      }
+   ],
+   "geppettoModel":{
+      "id":1,
+      "url":"https://github.com/MetaCell/pygeppetto-django/blob/development-roman/pygeppetto_gateway/templates/model_template.xmi",
+      "type":"GEPPETTO_PROJECT"
+   }
+}
