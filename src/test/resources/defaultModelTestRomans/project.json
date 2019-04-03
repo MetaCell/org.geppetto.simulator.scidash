@@ -29,7 +29,7 @@
    ],
    "geppettoModel":{
       "id":1,
-      "url":"http://localhost:8000/static/projects/jupyter/OSB/model.xmi",
+      "url":"https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/model.xmi",
       "type":"GEPPETTO_PROJECT"
    }
 }
