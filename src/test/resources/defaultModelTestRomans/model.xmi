@@ -9,6 +9,6 @@
       name="NeuroML">
     <types xsi:type="gep_1:ImportType"
         url="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/BasketCell.net.nml" 
-        modelInterpreterId="neuroMLModelInterpreter"/>
+        modelInterpreterId="lemsModelInterpreter"/>
   </libraries>
 </gep:GeppettoModel>
