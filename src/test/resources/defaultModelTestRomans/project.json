@@ -21,7 +21,8 @@
                     "target": "network_ACnet2",
                     "scoreID": "NULL"
                   }
-                }
+                },
+                "watchedVariables": ["time"]        
             }
          ]
       }
