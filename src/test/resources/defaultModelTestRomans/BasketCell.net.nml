@@ -21,10 +21,6 @@
             </instance>
         </population>
 
-        <inputList id="Input_0" component="Input_0" population="baskets">
-            <input id="0" target="../baskets/0/bask" destination="synapses"/>
-        </inputList>
-
     </network>
 
 </neuroml>
