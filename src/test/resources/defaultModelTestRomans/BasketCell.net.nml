@@ -6,7 +6,7 @@
 
     <notes>1 basket cell</notes>
 
-    <include href="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/bask.cell.nml"/>
+    <include href="bask.cell.nml"/>
 
     <pulseGenerator id="Input_0" delay="0.1s" duration="0.5s" amplitude="1.0E-10A"/>
 
