@@ -3,9 +3,9 @@
 
     <include href="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/Kdr_bask.channel.nml"/>
 
-    <include href="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/LeakConductance_bask.channel.nml"/>
+    <include href="LeakConductance_bask.channel.nml"/>
 
-    <include href="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/Na_bask.channel.nml"/>
+    <include href="Na_bask.channel.nml"/>
 
     <cell id="bask">
 
