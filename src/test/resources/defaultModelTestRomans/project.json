@@ -13,7 +13,7 @@
                "instance":"network_ACnet2",
                "simulatorConfiguration":{
                   "id":1,
-                  "simulatorId":"scidashSimulator",
+                  "simulatorId":"neuronSimulator",
                   "timestep":0.00005,
                   "length":0.3,
                   "parameters": {
