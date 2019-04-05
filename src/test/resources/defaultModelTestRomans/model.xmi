@@ -8,7 +8,6 @@
       id="neuroml"
       name="NeuroML">
     <types xsi:type="gep_1:ImportType"
-    	id="defaultModel"
         url="https://raw.githubusercontent.com/OpenSourceBrain/ACnet2/master/neuroConstruct/generatedNeuroML2/BasketCell.net.nml"
         modelInterpreterId="neuroMLModelInterpreter"
         referenceURL="testing"/>
