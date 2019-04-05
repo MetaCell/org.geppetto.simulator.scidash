@@ -22,17 +22,10 @@
 							"target": "network_ACnet2"
 						}
 					},
-					"watchedVariables": ["network_ACnet2.baskets[0].biophys.totSpecCap",
-                  "network_ACnet2.baskets[0].iChannels",
-                  "network_ACnet2.baskets[0].iSyn",
-                  "network_ACnet2.baskets[0].totSpecCap",
-                  "network_ACnet2.baskets[0].surfaceArea",
-                  "network_ACnet2.baskets[0].iCa",
-                  "network_ACnet2.baskets[0].soma_0.spiking",
+					"watchedVariables": ["network_ACnet2.baskets[0].soma_0.spiking",
                   "network_ACnet2.baskets[0].soma_0.v",
                   "network_ACnet2.baskets[0].dend_1.spiking",
                   "network_ACnet2.baskets[0].dend_1.v",
-                  "network_ACnet2.baskets[0].Input_0.i",
                   "time"]				
                }
 			]
