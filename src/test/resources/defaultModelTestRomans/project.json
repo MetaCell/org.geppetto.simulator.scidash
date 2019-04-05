@@ -10,7 +10,7 @@
          "aspectConfigurations":[
             {
                "id":1,
-               "instance":"defaultModel",
+               "instance":"network_ACnet2",
                "simulatorConfiguration":{
                   "id":1,
                   "simulatorId":"scidashSimulator",
@@ -21,7 +21,7 @@
                     "scoreID": "123"
                   }
                 },
-                "watchedVariables": ["defaultModel.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.forwardRate.r"]        
+                "watchedVariables": ["network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.forwardRate.r"]        
             }
          ]
       }
