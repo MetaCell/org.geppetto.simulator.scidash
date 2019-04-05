@@ -1,11 +1,11 @@
 {
 	"id": 1,
-	"name": "defaultProject",
+	"name": "acnet2",
 	"activeExperimentId": 1,
 	"experiments": [
 		{
 			"id": 1,
-			"name": "DefaultProject",
+			"name": "Basketcell - net",
 			"status": "DESIGN",
 			"creationDate": "1554476230470",
 			"lastModified": "1554476230470",
