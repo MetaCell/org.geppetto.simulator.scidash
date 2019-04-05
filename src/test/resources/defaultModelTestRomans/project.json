@@ -22,7 +22,7 @@
 							"target": "network_ACnet2"
 						}
 					},
-					"watchedVariables": ["network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.forwardRate.r"]        
+					"watchedVariables": []        
 				}
 			]
 		}
