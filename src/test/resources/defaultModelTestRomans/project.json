@@ -5,7 +5,7 @@
 	"experiments": [
 		{
 			"id": 1,
-			"name": "Basketcell - net",
+			"name": "BasketCell - net",
 			"status": "DESIGN",
 			"creationDate": "1554476230470",
 			"lastModified": "1554476230470",
@@ -22,14 +22,14 @@
 							"target": "network_ACnet2"
 						}
 					},
-					"watchedVariables":["network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.forwardRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.reverseRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.alpha", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.beta", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.tau", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.inf", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.rateScale", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.fcond", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.q", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.g", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.fopen", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.gDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.iDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.LeakConductance_bask_all.LeakConductance_bask.g", "network_ACnet2.baskets[0].biophys.membraneProperties.LeakConductance_bask_all.LeakConductance_bask.fopen", "network_ACnet2.baskets[0].biophys.membraneProperties.LeakConductance_bask_all.gDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.LeakConductance_bask_all.iDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.forwardRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.reverseRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.alpha", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.beta", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.tau", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.inf", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.rateScale", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.fcond", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.m.q", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.forwardRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.reverseRate.r", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.alpha", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.beta", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.tau", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.inf", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.rateScale", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.fcond", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.h.q", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.g", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.Na_bask.fopen", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.gDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.Na_bask_soma_group.iDensity", "network_ACnet2.baskets[0].biophys.membraneProperties.specificCapacitance.specCap", "network_ACnet2.baskets[0].biophys.membraneProperties.totChanCurrent", "network_ACnet2.baskets[0].biophys.membraneProperties.iCa", "network_ACnet2.baskets[0].biophys.membraneProperties.totSpecCap", "network_ACnet2.baskets[0].biophys.totSpecCap", "network_ACnet2.baskets[0].iChannels", "network_ACnet2.baskets[0].iSyn", "network_ACnet2.baskets[0].totSpecCap", "network_ACnet2.baskets[0].surfaceArea", "network_ACnet2.baskets[0].iCa", "network_ACnet2.baskets[0].soma_0.spiking", "network_ACnet2.baskets[0].soma_0.v", "network_ACnet2.baskets[0].dend_1.spiking", "network_ACnet2.baskets[0].dend_1.v", "network_ACnet2.baskets[0].Input_0.i", "time"]
+					"watchedVariables": ["network_ACnet2.baskets[0].soma_0.v","network_ACnet2.baskets[0].dend_1.v"]        
 				}
 			]
 		}
 	],
 	"geppettoModel": {
 		"id": 1,
-		"url": "http://opensourcebrain.org/geppetto/tmp/BasketCell_MODELe999518555d07388e76ffbec126e4cf5.xmi",
+		"url": "https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultModelTestRomans/model.xmi",
 		"type": "GEPPETTO_PROJECT"
 	}
 }
