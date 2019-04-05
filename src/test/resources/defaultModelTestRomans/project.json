@@ -22,7 +22,7 @@
                     "scoreID": "123"
                   }
                 },
-                "watchedVariables": []        
+                "watchedVariables": ["defaultModel.baskets[0].biophys.membraneProperties.Kdr_bask_soma_group.Kdr_bask.n.forwardRate.r"]        
             }
          ]
       }
