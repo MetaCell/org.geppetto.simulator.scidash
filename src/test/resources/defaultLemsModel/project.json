@@ -22,7 +22,7 @@
                     "scoreID": "25"
                   }
                 },
-                "watchedVariables": ["defaultModel.net1.RS_pop[0].v"]
+                "watchedVariables": ["defaultModel.sim1.RS_pop[0].v"]
             }
          ]
       }
