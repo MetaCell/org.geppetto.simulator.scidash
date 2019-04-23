@@ -5,11 +5,11 @@
       name=""
       types="//@libraries.0/@types.0"/>
   <libraries
-      id="neuroml"
+      id="Izh2007One"
       name="NeuroML">
     <types xsi:type="gep_1:ImportType"
         id="sim1"
-        url="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultLemsModel/LEMS_2007One.xml"
+        url="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"
         modelInterpreterId="lemsModelInterpreter" />
   </libraries>
 </gep:GeppettoModel>
