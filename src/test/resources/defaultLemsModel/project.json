@@ -22,7 +22,7 @@
                     "scoreID": "25"
                   }
                 },
-                "watchedVariables": []
+                "watchedVariables": ["defaultModel.Izh2007One.RS_pop[0].v"]
             }
          ]
       }
