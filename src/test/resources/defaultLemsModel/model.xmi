@@ -10,6 +10,6 @@
     <types xsi:type="gep_1:ImportType"
         id="sim1"
         url="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"
-        modelInterpreterId="lemsModelInterpreter" />
+        modelInterpreterId="neuroMLModelInterpreter" />
   </libraries>
 </gep:GeppettoModel>
