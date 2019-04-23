@@ -9,7 +9,7 @@
 <Include file="Simulation.xml"/>
 
 
-<Include file="Izh2007One.net.nml"/>
+<Include file="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"/>
         
 
 <Simulation id="sim1" length="520ms" step="0.0025ms" target="Izh2007One">
