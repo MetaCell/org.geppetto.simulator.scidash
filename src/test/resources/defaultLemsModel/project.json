@@ -10,7 +10,7 @@
          "aspectConfigurations":[
             {
                "id":1,
-               "instance":"defaultModel",
+               "instance":"Izh2007One",
                "simulatorConfiguration":{
                   "id":1,
                   "simulatorId":"scidashSimulator",
@@ -22,7 +22,7 @@
                     "scoreID": "25"
                   }
                 },
-                "watchedVariables": ["defaultModel.Izh2007One.RS_pop[0].v"]
+                "watchedVariables": ["Izh2007One.RS_pop[0].v"]
             }
          ]
       }
