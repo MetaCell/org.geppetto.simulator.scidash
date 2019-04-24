@@ -9,7 +9,7 @@
       name="NeuroML">
     <types xsi:type="gep_1:ImportType"
         id="Izh2007One"
-        url="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"
+        url="https://raw.githubusercontent.com/MetaCell/org.geppetto.simulator.scidash/scidash-simulations/src/test/resources/defaultLemsModel/LEMS_2007One.xml"
         modelInterpreterId="neuroMLModelInterpreter" />
   </libraries>
 </gep:GeppettoModel>
