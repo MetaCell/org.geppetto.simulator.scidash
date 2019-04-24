@@ -12,7 +12,7 @@
 <Include file="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"/>
         
 
-<Simulation id="sim1" length="520ms" step="0.0025ms" target="Izh2007One">
+<Simulation id="sim1" length="520ms" step="0.0025ms" target="net1">
 
     
     <Display id="d1" title="RS v" timeScale="1ms" xmin="-50" xmax="570" ymin="-80" ymax="50">
