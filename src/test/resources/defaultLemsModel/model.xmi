@@ -5,10 +5,10 @@
       name=""
       types="//@libraries.0/@types.0"/>
   <libraries
-      id="Izh2007One"
+      id="neuroml"
       name="NeuroML">
     <types xsi:type="gep_1:ImportType"
-        id="sim1"
+        id="Izh2007One"
         url="https://raw.githubusercontent.com/OpenSourceBrain/IzhikevichModel/master/NeuroML2/Izh2007One.net.nml"
         modelInterpreterId="neuroMLModelInterpreter" />
   </libraries>

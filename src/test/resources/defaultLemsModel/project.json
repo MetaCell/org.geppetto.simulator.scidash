@@ -14,7 +14,6 @@
                "simulatorConfiguration":{
                   "id":1,
                   "simulatorId":"scidashSimulator",
-                  "conversionServiceId": "lemsConversion",
                   "timestep":0.00005,
                   "length":0.3,
                   "parameters": {
