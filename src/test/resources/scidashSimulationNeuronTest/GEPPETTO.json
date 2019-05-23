@@ -27,10 +27,10 @@
 					"scoreID": "123"
 				}
 			},
-			"watchedVariables": ["hhcell.hhpop[0].vdd",
-				"hhcell.hhpop[0].bioddPhys1.membraneProperties.naChans.na.m.q",
-				"hhcell.hhpop[0].bioPhydds1.membraneProperties.naChans.na.h.q",
-				"hhcell.hhpddop[0].bioPhys1.membraneProperties.kChans.k.n.q"
+			"watchedVariables": ["hhcell.hhpop[0].v",
+				"hhcell.hhpop[0].bioPhys1.membraneProperties.naChans.na.m.q",
+				"hhcell.hhpop[0].bioPhys1.membraneProperties.naChans.na.h.q",
+				"hhcell.hhpop[0].bioPhys1.membraneProperties.kChans.k.n.q"
 			]
 		}]
 	}]
