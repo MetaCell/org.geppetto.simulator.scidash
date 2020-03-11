@@ -21,23 +21,23 @@
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>core</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>simulator.external</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>model.neuroml</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>simulation</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
