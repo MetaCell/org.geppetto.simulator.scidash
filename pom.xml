@@ -5,7 +5,7 @@
 	<groupId>org.geppetto</groupId>
 	<artifactId>simulator.scidash</artifactId>
 	<name>Geppetto Simulator Scidash</name>
-	<version>0.4.2</version>
+	<version>1.1.0</version>
 	<packaging>bundle</packaging>
 	<properties>
         <spring.version>4.3.9.RELEASE</spring.version>
@@ -21,23 +21,23 @@
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>core</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>simulator.external</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>model.neuroml</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geppetto</groupId>
 			<artifactId>simulation</artifactId>
-			<version>${project.version}</version>
+			<version>[1.0, 2.0)</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
